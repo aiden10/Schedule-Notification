@@ -2,10 +2,14 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
+import os
 from datetime import timedelta, date
 import smtplib
 from email.message import EmailMessage
 import re
+
+sender_email = os.environ.get("SENDER_EMAIL")
+sender_password = os.environ.get("SENDER_PASSWORD")
 
 while (True):
     # email setup
@@ -55,7 +59,7 @@ while (True):
                 # if there were changes send an email with what was changed
                 msg.set_content("Shift at " + str(old_shifts[x]) + " has been changed to " + str(shifts[x]))
                 server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                server.login("farmboyShiftReminder@gmail.com", "uittsrygrdlhouny")
+                server.login(sender_email, sender_password)
                 server.send_message(msg)
                 server.quit()
             else:
